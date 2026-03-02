@@ -62,6 +62,22 @@ int solve(int N, int M, int K, vector<tuple<char, int, int>> P) {
 		return get<2>(a) < get<2>(b);
 	});
 
+	while(stop_index != verti.size())
+	{
+		int index;
+		for(index = stop_index; index < verti.size(); index++)
+		{
+			if(get<2>(verti[index]) != get<2>(verti[stop_index]))
+			{
+				stop_index = index; break;
+			}
+		}
+		sort(verti.begin() + index, verti.begin() + index + stop_index, [](auto a, auto b){
+			return get<1>(a) < get<1>(b);
+		});
+	
+	}
+
 	for(int i = 0; i + 1 < verti.size(); i++)
 	{
 		int a = i, b = i + 1;
@@ -77,6 +93,21 @@ int solve(int N, int M, int K, vector<tuple<char, int, int>> P) {
 	sort(LtoR_diag.begin(), LtoR_diag.end(), [](auto a, auto b){
 		return get<1>(a) + get<2>(a) < get<1>(b) + get<2>(b);// x + y sort
 	});
+	while(stop_index != LtoR_diag.size())
+	{
+		int index;
+		for(index = stop_index; index < LtoR_diag.size(); index++)
+		{
+			if(get<1>(LtoR_diag[index]) + get<2>(LtoR_diag[index]) != get<1>(LtoR_diag[stop_index]) + get<2>(LtoR_diag[stop_index]))
+			{
+				stop_index = index; break;
+			}
+		}
+		sort(LtoR_diag.begin() + index, LtoR_diag.begin() + index + stop_index, [](auto a, auto b){
+			return N + 1 - get<1>(a) + get<2>(a) < N + 1 - get<1>(b) + get<2>(b) ; // N + 1 - x + y  sort
+		});
+	
+	}
 
 	for(int i = 0; i + 1 < LtoR_diag.size(); i++)
 	{
@@ -92,6 +123,22 @@ int solve(int N, int M, int K, vector<tuple<char, int, int>> P) {
 		return N + 1 - get<1>(a) + get<2>(a) < N + 1 - get<1>(b) + get<2>(b) ; // N + 1 - x + y  sort
 	});
 	
+	while(stop_index != RtoL_diag.size())
+	{
+		int index;
+		for(index = stop_index; index < RtoL_diag.size(); index++)
+		{
+			if(N + 1 - get<1>(RtoL_diag[index]) + get<2>(RtoL_diag[index]) != N + 1 - get<1>(RtoL_diag[stop_index]) + get<2>(RtoL_diag[stop_index]))
+			{
+				stop_index = index; break;
+			}
+		}
+		sort(RtoL_diag.begin() + index, RtoL_diag.begin() + index + stop_index, [](auto a, auto b){
+			return get<1>(a) + get<2>(a) < get<1>(b) + get<2>(b); // x + y sort
+		});
+	
+	}
+
 	for(int i = 0; i + 1 < RtoL_diag.size(); i++)
 	{
 		int a = i, b = i + 1;
