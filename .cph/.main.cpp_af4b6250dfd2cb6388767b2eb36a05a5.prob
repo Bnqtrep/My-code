@@ -1,0 +1,1 @@
+{"name":"Local: main","url":"/Users/zl/Desktop/My-code/main.cpp","tests":[{"id":1772441994246,"input":"1\n1 45692\n3\nB 1 22562\nQ 1 11235\nR 1 45690","output":"2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/zl/Desktop/My-code/main.cpp","group":"local","local":true}

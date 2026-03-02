@@ -4,21 +4,22 @@ int check(tuple<char, int, int> piece_a, tuple<char, int, int> piece_b) {
 	int total = 0;
 	auto [type_a, a_x, a_y] = piece_a;
 	auto [type_b, b_x, b_y] = piece_b;
+	
 	if(type_a == 'Q') {
-		if(abs(a_x - b_x) == abs(a_y - b_y)) total++;
-		else if(a_x == b_x || a_y == b_y) total++;
+		if(abs(a_x - b_x) == abs(a_y - b_y) || a_x == b_x || a_y == b_y) total++; 
 	}
 	if(type_a == 'R') {
-		if(a_x == b_x || a_y == b_y) total++;
+		if(a_x == b_x || a_y == b_y)  total++;
 	}
 	if(type_a == 'B') {
-		if(abs(a_x - b_x) == abs(a_y - b_y)) total++;
+		if(abs(a_x - b_x) == abs(a_y - b_y)) total++; 
 	}
 	return total;
 
 }
 int solve(int N, int M, int K, vector<tuple<char, int, int>> P) {
     int total = 0;
+	int stop_index = 0;
 	// N: Number of rows of the board
     // M: Number of columns of the board
     // K: Number of pieces
@@ -26,9 +27,25 @@ int solve(int N, int M, int K, vector<tuple<char, int, int>> P) {
 	vector<tuple<char, int, int>> hori (P);
 	sort(hori.begin(), hori.end(), [](auto a, auto b){
 		return get<1>(a) < get<1>(b);
-	});
+	});	
+	while(stop_index != hori.size())
+	{
+		int index;
+		for(index = stop_index; index < hori.size(); index++)
+		{
+			if(get<1>(hori[index]) != get<1>(hori[stop_index]))
+			{
+				stop_index = index; break;
+			}
+		}
+		sort(hori.begin() + index, hori.begin() + index + stop_index, [](auto a, auto b){
+			return get<2>(a) < get<2>(b);
+		});
 	
-	for(int i = 0; i < hori.size(); i++)
+	}
+	
+
+	for(int i = 0; i + 1 < hori.size(); i++)
 	{
 		int a = i, b = i + 1;
 		auto [atype, ax, ay] = hori[a]; auto [btype, bx, by] = hori[b];
@@ -36,13 +53,15 @@ int solve(int N, int M, int K, vector<tuple<char, int, int>> P) {
 			total += check(hori[a], hori[b]); total += check(hori[b], hori[a]);
 		}
 	}
-//------
+
+	//------
+
 	vector<tuple<char, int, int>> verti (P);
 	sort(verti.begin(), verti.end(), [](auto a, auto b){
 		return get<2>(a) < get<2>(b);
 	});
 
-	for(int i = 0; i < verti.size(); i++)
+	for(int i = 0; i + 1 < verti.size(); i++)
 	{
 		int a = i, b = i + 1;
 		auto [atype, ax, ay] = verti[a]; auto [btype, bx, by] = verti[b];
@@ -50,12 +69,15 @@ int solve(int N, int M, int K, vector<tuple<char, int, int>> P) {
 			total += check(verti[a], verti[b]); total += check(verti[b], verti[a]);
 		}
 	}
-//------
+
+	//------
+
 	vector<tuple<char, int, int>> LtoR_diag (P);
 	sort(LtoR_diag.begin(), LtoR_diag.end(), [](auto a, auto b){
 		return get<1>(a) + get<2>(a) < get<1>(b) + get<2>(b);// x + y sort
 	});
-	for(int i = 0; i < LtoR_diag.size(); i++)
+
+	for(int i = 0; i + 1 < LtoR_diag.size(); i++)
 	{
 		int a = i, b = i + 1;
 		auto [atype, ax, ay] = LtoR_diag[a]; auto [btype, bx, by] = LtoR_diag[b];
@@ -68,7 +90,8 @@ int solve(int N, int M, int K, vector<tuple<char, int, int>> P) {
 	sort(RtoL_diag.begin(), RtoL_diag.end(), [&N](auto a, auto b){
 		return N + 1 - get<1>(a) + get<2>(a) < N + 1 - get<1>(b) + get<2>(b) ; // N + 1 - x + y  sort
 	});
-	for(int i = 0; i < RtoL_diag.size(); i++)
+	
+	for(int i = 0; i + 1 < RtoL_diag.size(); i++)
 	{
 		int a = i, b = i + 1;
 		auto [atype, ax, ay] = RtoL_diag[a]; auto [btype, bx, by] = RtoL_diag[b];
