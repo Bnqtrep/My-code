@@ -1,3 +1,4 @@
+//holy shit
 #include <bits/stdc++.h>
 using namespace std;
 int check(tuple<char, int, int> piece_a, tuple<char, int, int> piece_b) {
